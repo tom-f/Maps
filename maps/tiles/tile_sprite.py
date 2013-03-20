@@ -23,7 +23,14 @@ class Tile(Sprite):
     def __init__(self, *args, **kwargs):
         self.set_height = kwargs.get('tile_height', 0)
         self.set_width = kwargs.get('tile_width', 0)
-        pass
+        if self._tile_width or self._tile_height:
+            del kwargs['tile_width']
+            del kwargs['tile_height']
+        super(TileableSprite, self).__init__(*args, **kwargs)
+        if self._tile_width == 0 or self._tile_height == 0:
+            self._tile_width, self._tile_height = self.width, self.height
+        self._update_position()
+
 
     def update_tile(self):
         if not self._visible:
